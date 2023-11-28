@@ -69,14 +69,13 @@ function fixText(text)
     end
     return names[text]
 end
-
 function getPixelWidth(text)
-  local HvW = 0.88
+  local HvW = 0.85
   return (HvW * #text * fontSize)
 end
 
 xcoords = {}
-xcoords[1] = getPixelWidth("123456")
+xcoords[1] = getPixelWidth("123")
 xcoords[2] = xcoords[1] + getPixelWidth("waitress009")
 xcoords[3] = xcoords[2] + getPixelWidth("honeycomb refinery")
 xcoords[4] = xcoords[3] + getPixelWidth("running")
