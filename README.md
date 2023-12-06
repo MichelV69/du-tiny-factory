@@ -37,10 +37,10 @@ Still have questions? Ask here! https://discord.com/channels/760240626942869546/
 
 ## Release
 
-There are two versions currently available:
+There are two versions currently available at my Haven base: ::pos{0,27,-14.3128,30.9315,9.6166}
 
-* Space Core Unit XS (Starlantis) ::pos{0,0,-1000147.6580,593379.3559,-1418726.3931}
-* Static Core Unit XS (Alioth) ::pos{0,2,24.0023,105.5370,3.7709}
+* Space Core Unit XS
+* Static Core Unit XS
 
 DRM FREE! Play with the code, break it, improve it, have fun!
 
