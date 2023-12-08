@@ -1,5 +1,5 @@
 --- -
-local colHeaders = {"Source", "Line 1", "Line 2", "Finished"}  --bottom row Hub labels
+local colHeaders = {"Source", " ", " ", " ", " ", "Finished"}  --bottom row Hub labels
 local fontSize = 14 --on-screen font size
 local topMargin = 22 --don't change at random
 local custom_col_header_yPos = -1 --don't change at random
@@ -102,7 +102,35 @@ local screenRows = {}
  screenRows['yellow'] = {}
  screenRows['red'] = {}
 
-for _ , text in pairs(strSplit(getInput(), "\n")) do
+
+incomingScreenData = {}
+incomingScreenData = strSplit(getInput(), "\n")
+
+manager_version = incomingScreenData[1]
+num_lines = incomingScreenData[2]
+feed_multiplier = incomingScreenData[3]
+line_multiplier = incomingScreenData[4]
+
+
+if #incomingScreenData > 4 then
+    for i = 4,1,-1 do
+      table.remove(incomingScreenData, i)
+      end
+    end
+
+if manager_version == nil then manager_version = -1 end
+if num_lines == nil then num_lines = 1 end
+if feed_multiplier == nil then feed_multiplier = 1 end
+if line_multiplier == nil then line_multiplier = 1 end
+
+color = white
+setNextFillColor(l, color.r, color.g, color.b, color.o)
+y = 1 * (fontSize + (fontSize * grUsed)) + topMargin
+topLine = "[manager_version: " .. manager_version .. "] [line_cooks:" .. num_lines .. "]"
+topLine = topLine .. " [Feed X" .. feed_multiplier .. "] [Line X" .. line_multiplier  .. "]"
+addText(l, font, topLine, xcoords[1], y, AlignH_Center, AlignV_Middle, ToColor(0.5, 0.5, 0.5, 0.5))
+
+for _ , text in pairs(incomingScreenData) do
     split = strSplit(text, ",")
     local typicalData = true
     if split[3] == "`R" then
@@ -139,7 +167,7 @@ for _,data in pairs(screenRows.white) do
   table.insert(priorityTable, data)
 end
 
-local rowCount = 1
+local rowCount = 2
 for _,text in pairs(priorityTable) do
     y = rowCount * (fontSize + (fontSize * grUsed)) + topMargin
     split = strSplit(text, ",")
