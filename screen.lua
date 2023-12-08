@@ -29,7 +29,7 @@ for colNo, thisHeader in ipairs(colHeaders) do
     end
 
 --- -
-function strSplit(a,b)result={} for c in(a..b):gmatch("(.-)"..b) do table.insert(result,c) end; return result end
+function stringToTable(a,b)result={} for c in(a..b):gmatch("(.-)"..b) do table.insert(result,c) end; return result end
 
 function pad(text, pad)
     if pad == nil then return text end
@@ -95,25 +95,17 @@ local green = ToColor(0, 1, 0, 1)
 local goldenRatio = 1.61803399
 local grUsed = (goldenRatio - 1) /2
 
---- screen display by priority START ---
-local screenRows = {}
- screenRows['white'] = {}
- screenRows['green'] = {}
- screenRows['yellow'] = {}
- screenRows['red'] = {}
-
-
 incomingScreenData = {}
-incomingScreenData = strSplit(getInput(), "\n")
+incomingScreenData = stringToTable(getInput(), "\n")
 
 manager_version = incomingScreenData[1]
 num_lines = incomingScreenData[2]
 feed_multiplier = incomingScreenData[3]
 line_multiplier = incomingScreenData[4]
+industry_elements = incomingScreenData[5]
 
-
-if #incomingScreenData > 4 then
-    for i = 4,1,-1 do
+if #incomingScreenData > 5 then
+    for i = 5,1,-1 do
       table.remove(incomingScreenData, i)
       end
     end
@@ -122,55 +114,20 @@ if manager_version == nil then manager_version = -1 end
 if num_lines == nil then num_lines = 1 end
 if feed_multiplier == nil then feed_multiplier = 1 end
 if line_multiplier == nil then line_multiplier = 1 end
+if industry_elements == nil then industry_elements = 1 end
 
 color = white
 setNextFillColor(l, color.r, color.g, color.b, color.o)
 y = 1 * (fontSize + (fontSize * grUsed)) + topMargin
 topLine = "[manager_version: " .. manager_version .. "] [line_cooks:" .. num_lines .. "]"
+topLine = topLine .. " [TF Controlled Machines: " .. industry_elements .. "]"
 topLine = topLine .. " [Feed X" .. feed_multiplier .. "] [Line X" .. line_multiplier  .. "]"
-addText(l, font, topLine, xcoords[1], y, AlignH_Center, AlignV_Middle, ToColor(0.5, 0.5, 0.5, 0.5))
-
-for _ , text in pairs(incomingScreenData) do
-    split = strSplit(text, ",")
-    local typicalData = true
-    if split[3] == "`R" then
-      table.insert(screenRows.green, text)
-      typicalData = false
-      end
-    if split[3] == "!!" then
-     table.insert(screenRows.yellow, text)
-      typicalData = false
-     end
-    if split[2] == "Refiner" and split[3] == '`W' then
-      table.insert(screenRows.red, text)
-      typicalData = false
-      end
-    if typicalData then table.insert(screenRows.white, text) end
-end
-
-table.sort(screenRows.red)
-table.sort(screenRows.yellow)
-table.sort(screenRows.green)
-table.sort(screenRows.white)
-
-local priorityTable = {}
-for _,data in pairs(screenRows.red) do
-  table.insert(priorityTable, data)
-end
-for _,data in pairs(screenRows.yellow) do
-  table.insert(priorityTable, data)
-end
-for _,data in pairs(screenRows.green) do
-  table.insert(priorityTable, data)
-end
-for _,data in pairs(screenRows.white) do
-  table.insert(priorityTable, data)
-end
+addText(l, fontHeader, topLine, xcoords[1], y, AlignH_Center, AlignV_Middle, ToColor(0.5, 0.5, 0.5, 0.5))
 
 local rowCount = 2
-for _,text in pairs(priorityTable) do
+for _,text in pairs(incomingScreenData) do
     y = rowCount * (fontSize + (fontSize * grUsed)) + topMargin
-    split = strSplit(text, ",")
+    split = stringToTable(text, ",")
     local color = white
     if split[3] == "`R" then color = green end
     if split[3] == "!!" then color = red end
@@ -186,7 +143,6 @@ for _,text in pairs(priorityTable) do
         end
     end
 end
---- screen display by priority END ---
 
 requestAnimationFrame(1000)
 --- eof ---
