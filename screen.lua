@@ -1,5 +1,5 @@
 --- -
-local colHeaders = {"Source", " ", " ", " ", " ", "Finished"}  --bottom row Hub labels
+local colHeaders = {"Inputs", "Line1", "Line2", "Outputs"}  --bottom row Hub labels
 local fontSize = 14 --on-screen font size
 local topMargin = 22 --don't change at random
 local custom_col_header_yPos = -1 --don't change at random
@@ -14,9 +14,12 @@ local config = { fontSize = fontSize}
 local fontHeaderSize = fontSize+2
 local font = loadFont('RobotoMono', fontSize)
 local fontHeader = loadFont('RobotoMono', fontHeaderSize)
-local l = createLayer()
+local l = {}
+l.data = createLayer()
+l.banner = createLayer()
 
-DEFAULT_COL_HEADER_YPOS = 490
+
+DEFAULT_COL_HEADER_YPOS = 480
 local y_pos = DEFAULT_COL_HEADER_YPOS
 if custom_col_header_yPos ~= -1 then y_pos = custom_col_header_yPos end
 
@@ -25,7 +28,7 @@ local x_pad = x_width / -2
 
 for colNo, thisHeader in ipairs(colHeaders) do
     local backCenter = #thisHeader * fontHeaderSize / 2
-    addText(l, fontHeader, thisHeader, x_pad + (x_width * colNo) - backCenter, y_pos, 0)
+    addText(l.banner, fontHeader, thisHeader, x_pad + (x_width * colNo) - backCenter, y_pos, 0)
     end
 
 --- -
@@ -74,7 +77,7 @@ function getPixelWidth(text)
   return (HvW * #text * fontSize)
 end
 
-xcoords = {}
+local xcoords = {}
 xcoords[1] = getPixelWidth("123")
 xcoords[2] = xcoords[1] + getPixelWidth("waitress009")
 xcoords[3] = xcoords[2] + getPixelWidth("honeycomb refinery")
@@ -82,7 +85,7 @@ xcoords[4] = xcoords[3] + getPixelWidth("running")
 xcoords[5] = xcoords[4] + getPixelWidth("123456")
 xcoords[6] = xcoords[5] + getPixelWidth("123456")
 
-padding = {}
+local padding = {}
 padding[1] = -5
 padding[4] = -5
 padding[5] = -5
@@ -91,40 +94,54 @@ padding[5] = -5
 local white = ToColor(1, 1, 1, 1)
 local red = ToColor(1, 0, 0, 1)
 local green = ToColor(0, 1, 0, 1)
+local yellow = ToColor(1,1,0,1)
 
 local goldenRatio = 1.61803399
 local grUsed = (goldenRatio - 1) /2
 
-incomingScreenData = {}
+local incomingScreenData = {}
 incomingScreenData = stringToTable(getInput(), "\n")
 
-manager_version = incomingScreenData[1]
-num_lines = incomingScreenData[2]
-feed_multiplier = incomingScreenData[3]
-line_multiplier = incomingScreenData[4]
-industry_elements = incomingScreenData[5]
+local encapData = {}
+encapData.manager_version = incomingScreenData[1]
+encapData.num_lines       = incomingScreenData[2]
+encapData.feed_multiplier = incomingScreenData[3]
+encapData.line_multiplier = incomingScreenData[4]
+encapData.industry_elements = incomingScreenData[5]
+encapData.factory_desc = incomingScreenData[6]
+encapData.size = 6
 
-if #incomingScreenData > 5 then
-    for i = 5,1,-1 do
+if #incomingScreenData > encapData.size then
+    for i = encapData.size,1,-1 do
       table.remove(incomingScreenData, i)
       end
     end
 
-if manager_version == nil then manager_version = -1 end
-if num_lines == nil then num_lines = 1 end
-if feed_multiplier == nil then feed_multiplier = 1 end
-if line_multiplier == nil then line_multiplier = 1 end
-if industry_elements == nil then industry_elements = 1 end
+if encapData.manager_version   == nil then encapData.manager_version   = -1 end
+if encapData.num_lines         == nil then encapData.num_lines         = 1 end
+if encapData.feed_multiplier   == nil then encapData.feed_multiplier   = 1 end
+if encapData.line_multiplier   == nil then encapData.line_multiplier   = 1 end
+if encapData.industry_elements == nil then encapData.industry_elements = 1 end
+if encapData.factory_desc      == nil then encapData.factory_desc = " --- "  end
 
 color = white
-setNextFillColor(l, color.r, color.g, color.b, color.o)
-y = 1 * (fontSize + (fontSize * grUsed)) + topMargin
-topLine = "[manager_version: " .. manager_version .. "] [line_cooks:" .. num_lines .. "]"
-topLine = topLine .. " [TF Controlled Machines: " .. industry_elements .. "]"
-topLine = topLine .. " [Feed X" .. feed_multiplier .. "] [Line X" .. line_multiplier  .. "]"
-addText(l, fontHeader, topLine, xcoords[1], y, AlignH_Center, AlignV_Middle, ToColor(0.5, 0.5, 0.5, 0.5))
+setNextFillColor(l.data, color.r, color.g, color.b, color.o)
+setNextFillColor(l.banner, color.r, color.g, color.b, color.o)
+local rowCount = 1
 
-local rowCount = 2
+y = rowCount * (fontSize + (fontSize * grUsed)) + topMargin
+topLine = "[Manager v" .. encapData.manager_version .. "] [Configured Lines:" .. encapData.num_lines .. "]"
+topLine = topLine .. " [TF Controlled Machines: " .. encapData.industry_elements .. "]"
+topLine = topLine .. " [Feed X" .. encapData.feed_multiplier .. "] [Line X" .. encapData.line_multiplier  .. "]"
+addText(l.banner, fontHeader, topLine, xcoords[1], y, AlignH_Center, AlignV_Middle, ToColor(0.5, 0.5, 0.5, 0.5))
+
+rowCount = rowCount + 1
+y = rowCount * (fontSize + (fontSize * grUsed)) + topMargin
+topLine = "[Sub-Factory Description: " .. encapData.factory_desc   .. "]"
+addText(l.banner, fontHeader, topLine, xcoords[1], y, AlignH_Center, AlignV_Middle, ToColor(0.5, 0.5, 0.5, 0.5))
+
+rowCount = rowCount + 2
+
 for _,text in pairs(incomingScreenData) do
     y = rowCount * (fontSize + (fontSize * grUsed)) + topMargin
     split = stringToTable(text, ",")
@@ -138,11 +155,11 @@ for _,text in pairs(incomingScreenData) do
     if split[1] ~= "" then
         rowCount = rowCount + 1
         for j, t in pairs(split) do
-            setNextFillColor(l, color.r, color.g, color.b, color.o)
-            addText(l, font, pad( fixText(t:gsub("^||", "line")), padding[j]), xcoords[j], y, AlignH_Center, AlignV_Middle, ToColor(0.5, 0.5, 0.5, 0.5))
+            setNextFillColor(l.data, color.r, color.g, color.b, color.o)
+            addText(l.data, font, pad( fixText(t:gsub("^||", "line")), padding[j]), xcoords[j], y, AlignH_Center, AlignV_Middle, ToColor(0.5, 0.5, 0.5, 0.5))
         end
     end
 end
 
-requestAnimationFrame(1000)
+requestAnimationFrame(2200)
 --- eof ---
