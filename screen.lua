@@ -141,6 +141,7 @@ topLine = "[Sub-Factory Description: " .. encapData.factory_desc   .. "]"
 addText(l.banner, fontHeader, topLine, xcoords[1], y, AlignH_Center, AlignV_Middle, ToColor(0.5, 0.5, 0.5, 0.5))
 
 rowCount = rowCount + 2
+
 for _,text in pairs(incomingScreenData) do
     y = rowCount * (fontSize + (fontSize * grUsed)) + topMargin
     split = stringToTable(text, ",")
