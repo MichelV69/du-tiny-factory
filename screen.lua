@@ -1,5 +1,5 @@
 --- -
-local colHeaders = {"Inputs", "Line1", "Line2", "Outputs"}  --bottom row Hub labels
+local colHeaders = {"Inputs", " ", " ", "Outputs"}  --bottom row Hub labels
 local fontSize = 14 --on-screen font size
 local topMargin = 22 --don't change at random
 local custom_col_header_yPos = -1 --don't change at random
@@ -18,8 +18,7 @@ local l = {}
 l.data = createLayer()
 l.banner = createLayer()
 
-
-DEFAULT_COL_HEADER_YPOS = 480
+DEFAULT_COL_HEADER_YPOS = 511
 local y_pos = DEFAULT_COL_HEADER_YPOS
 if custom_col_header_yPos ~= -1 then y_pos = custom_col_header_yPos end
 
@@ -137,11 +136,10 @@ addText(l.banner, fontHeader, topLine, xcoords[1], y, AlignH_Center, AlignV_Midd
 
 rowCount = rowCount + 1
 y = rowCount * (fontSize + (fontSize * grUsed)) + topMargin
-topLine = "[Sub-Factory Description: " .. encapData.factory_desc   .. "]"
+topLine = "[Factory Description: " .. encapData.factory_desc   .. "]"
 addText(l.banner, fontHeader, topLine, xcoords[1], y, AlignH_Center, AlignV_Middle, ToColor(0.5, 0.5, 0.5, 0.5))
 
 rowCount = rowCount + 2
-
 for _,text in pairs(incomingScreenData) do
     y = rowCount * (fontSize + (fontSize * grUsed)) + topMargin
     split = stringToTable(text, ",")
