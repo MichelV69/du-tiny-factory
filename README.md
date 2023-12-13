@@ -78,8 +78,19 @@ Future versions will include all Rare industries so that all tiers can be assemb
 * 1x Uncommon Assembly Line S
 * 1x Uncommon Assembly Line XS
 
-# Update History
+# Updates
 
+## how to read V-numbers
+
+This project uses the (Semantic Versioning)[https://en.wikipedia.org/wiki/Software_versioning#Semantic_versioning].
+
+> *Breaking changes are indicated by increasing the **major number** (**high risk**); new, non-breaking features increment the **minor number** (**medium risk**); and all other non-breaking changes increment the **patch number** (**lowest risk**).*
+
+A letter suffix is an indication of a patch-in-progress / waiting for testing, and should _**never**_ be used in a production environment.
+
+An "-RC" indicates a "release candidate" and _should_ be safe to use in production, but you may also be the victim of a Country Music song plot if you do.
+
+## History
 * v1.2.1 - Fork of original code. Include changes for screen display priority.
 * v1.1.2 - Big fix on ingredient checking for items with more than one recipe, such as Catalyst 3.
 * v1.1.1 - Minor bug fixes and other improvements
