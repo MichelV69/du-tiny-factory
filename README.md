@@ -91,6 +91,7 @@ A letter suffix is an indication of a patch-in-progress / waiting for testing, a
 An "-RC" indicates a "release candidate" and _should_ be safe to use in production, but you may also be the victim of a Country Music song plot if you do.
 
 ## History
+* (v1.2.2) - **In development.** Includes fixes for some honeycomb and lumi glass not being produced due to shortages, and moving all user-config items into 'customer'
 * v1.2.1 - Fork of original code. Include changes for screen display priority.
 * v1.1.2 - Big fix on ingredient checking for items with more than one recipe, such as Catalyst 3.
 * v1.1.1 - Minor bug fixes and other improvements
