@@ -1,4 +1,7 @@
+CLASSIC_YPOS = 488
+THREELINE_YPOS = 511
 --- -
+DEFAULT_COL_HEADER_YPOS = CLASSIC_YPOS -- pick one of above two, or set your own integer value
 local colHeaders = {"Inputs", " ", " ", "Outputs"}  --bottom row Hub labels
 local fontSize = 14 --on-screen font size
 local topMargin = 22 --don't change at random
@@ -18,7 +21,7 @@ local l = {}
 l.data = createLayer()
 l.banner = createLayer()
 
-DEFAULT_COL_HEADER_YPOS = 511
+
 local y_pos = DEFAULT_COL_HEADER_YPOS
 if custom_col_header_yPos ~= -1 then y_pos = custom_col_header_yPos end
 
