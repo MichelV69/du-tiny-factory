@@ -142,10 +142,11 @@ addText(l.banner, fontHeader, topLine, xcoords[1], y, AlignH_Center, AlignV_Midd
 rowCount = rowCount + 2
 for _,text in pairs(incomingScreenData) do
     y = rowCount * (fontSize + (fontSize * grUsed)) + topMargin
-    split = stringToTable(text, ",")
+    local split = stringToTable(text, ",")
     local color = white
     if split[3] == "`R" then color = green end
     if split[3] == "!!" then color = red end
+    if split[3] == "`J" then color = yellow end
     if split[2] == "Refiner" and split[3] == '`W' then
         color = red
         split[3] = "!NEED ORE!"
