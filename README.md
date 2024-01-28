@@ -35,34 +35,21 @@ Enter the value below into the primary board, which is the one sitting on top of
 
 Still have questions? Ask here! https://discord.com/channels/760240626942869546/1078009204792631437/
 
-## Release
+## Is it DRM protected?
 
-There are two versions currently available at my Haven base: ::pos{0,27,-14.3128,30.9315,9.6166}
+No! Completely DRM FREE! Play with the code, break it, improve it, have fun!
 
-* Space Core Unit XS
-* Static Core Unit XS
-
-DRM FREE! Play with the code, break it, improve it, have fun!
-
-## Roadmap
-
-Future versions will include all Rare industries so that all tiers can be assembled. Larger cores will include optional XL Assembly Line as well.
-
-## Shopping List 
-
-(all industries sold at Alioth location)
+## Shopping List
 
 * 4x Basic Container M
 * 1x Basic Container XS
 * 2x Basic Recycler
 * 5x Container Hub
 * 1x Databank XS
-* 4x Long Light L
 * 5x Manual Switch XS
 * 6x Programming Board XS
 * 1x Screen M
 * 1x Screen XS
-* 2x Square Light M
 * 1x Static/Space Core Unit XS
 
 * 2x Uncommon 3d Printer
@@ -78,6 +65,10 @@ Future versions will include all Rare industries so that all tiers can be assemb
 * 1x Uncommon Assembly Line S
 * 1x Uncommon Assembly Line XS
 
+# Blueprints
+
+Ready-to-build BPs are available upon request. Contact PE902Gaming in DU to arrange to get one.
+
 # Updates
 
 ## how to read V-numbers
@@ -91,7 +82,8 @@ A letter suffix is an indication of a patch-in-progress / waiting for testing, a
 An "-RC" indicates a "release candidate" and _should_ be safe to use in production, but you may also be the victim of a Country Music song plot if you do.
 
 ## History
-* v1.2.1 - Fork of original code. Include changes for screen display priority.
+(v1.2.2) - In development. Includes fixes for some honeycomb and lumi glass not being produced due to shortages, and moving all user-config items into 'customer'
+* v1.2.1 - Fork of original code by https://github.com/MichelV69 (DU: PE902Gaming). Include changes for screen display priority.
 * v1.1.2 - Big fix on ingredient checking for items with more than one recipe, such as Catalyst 3.
 * v1.1.1 - Minor bug fixes and other improvements
 * v1.1.0 - Minor bug fixes and other improvements
