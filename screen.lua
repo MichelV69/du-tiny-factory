@@ -9,7 +9,7 @@ local topMargin = 22                               --don't change at random
 local custom_col_header_yPos = -1                  --don't change at random
 ---
 --- ---
-pb_customer_version = "1.2.2-RC"
+pb_customer_version = "1.2.2-RC2"
 local rslib = require('rslib')
 if not init then
     rx, ry = getResolution()

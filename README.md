@@ -1,5 +1,11 @@
 # Tiny Factory
 
+## Current Version
+
+"1.2.2-RC2"
+
+## Explanation / Reasoning
+
 Market too far to go buy stuff? Industry line too obnoxious to setup for a few knock off items? Then this is the solution for you!
 
 The Tiny Factory will handle the industry lines for you. Just tell it what you want, turn it on, make sure it has ores and schematics, and it'll handle the rest! This Tiny Factory in a box, composed of only 20 industry units, can make any Basic, Uncommon, or Advanced item that can be produced by the XS, S, M, or L Assembly Line.
