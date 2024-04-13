@@ -29,6 +29,10 @@ Enter the value below into the primary board, which is the one sitting on top of
     items[404188468] = 1 -- wing m
     items[2375915630] = 1 -- atmo engine l
 
+### Equipment Names
+* Do NOT rename you industry units.  DUTF requies that it be able to read the "original" name to figure out what job to give to what equipment.
+* Software / Programming boards and Manual Switches connected to them ***must** have a digit as the last character for "chef", "waitress" and "linecook".  It cannot be a "zero";  so "chef1" is okay, but "chef01" is not.
+
 ## FAQ:
 * I want to change what gets made, how do I do that? Just CTRL-L on the primary board, edit the values, and click Apply. Then turn the board on! If it was already on, turn it off and then back on again.
 * I want to make things like honeycomb, scrap, fuel, or warp cells, how do I do that? The Tiny Factory's default configuration only produces things that are made with Assemblers. If you'd like to customize the final products, remove one an assembler of your choice and replace it with the industry that can make your preferred final product. Link Line 1 and Line 2 Hubs to this industry as inputs, and link the Output Hub as Output. Finally, link the industry to the "chef" programming board as this board handles the final product production. After doing this turn your factory off and back on again!
