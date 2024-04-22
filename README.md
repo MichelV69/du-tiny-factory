@@ -2,7 +2,7 @@
 
 ## Current Version
 
-"1.2.2-RC2"
+"1.2.2"
 
 ## Explanation / Reasoning
 
@@ -10,11 +10,11 @@ Market too far to go buy stuff? Industry line too obnoxious to setup for a few k
 
 The Tiny Factory will handle the industry lines for you. Just tell it what you want, turn it on, make sure it has ores and schematics, and it'll handle the rest! This Tiny Factory in a box, composed of only 20 industry units, can make any Basic, Uncommon, or Advanced item that can be produced by the XS, S, M, or L Assembly Line.
 
-https://du-creators.org/makers/Squizz/ship/Tiny%20Factory
+<https://du-creators.org/makers/Squizz/ship/Tiny%20Factory>
 
 ## Instructions:
 
-To add an item, look it up by name on https://du-lua.dev/#/items
+To add an item, look it up by name on <https://du-lua.dev/#/items>
 Enter the value below into the primary board, which is the one sitting on top of the pedestal. As you see in the examples, left side is the item id, right side is the item quantity. Then turn on the primary board! The programming boards will work together to handle the rest.
 
     -- some example complicated items for testing your new Tiny Factory
@@ -30,10 +30,12 @@ Enter the value below into the primary board, which is the one sitting on top of
     items[2375915630] = 1 -- atmo engine l
 
 ### Equipment Names
-* Do NOT rename you industry units.  DUTF requies that it be able to read the "original" name to figure out what job to give to what equipment.
+
+* Do NOT rename your industry units.  DUTF requies that it be able to read the "original" name to figure out what job to give to what equipment.
 * Software / Programming boards and Manual Switches connected to them ***must** have a digit as the last character for "chef", "waitress" and "linecook".  It cannot be a "zero";  so "chef1" is okay, but "chef01" is not.
 
 ## FAQ:
+
 * I want to change what gets made, how do I do that? Just CTRL-L on the primary board, edit the values, and click Apply. Then turn the board on! If it was already on, turn it off and then back on again.
 * I want to make things like honeycomb, scrap, fuel, or warp cells, how do I do that? The Tiny Factory's default configuration only produces things that are made with Assemblers. If you'd like to customize the final products, remove one an assembler of your choice and replace it with the industry that can make your preferred final product. Link Line 1 and Line 2 Hubs to this industry as inputs, and link the Output Hub as Output. Finally, link the industry to the "chef" programming board as this board handles the final product production. After doing this turn your factory off and back on again!
 * What is this "Unknown Schematic" I see in the LUA chat window? This is normal. The game's scripting does not provide information on what industry units create which items, so the boards have to figure it out. When a board tries to apply an element to an industry that does not make that element, you will see the error. When a successful match is found, it will be saved to the databank and used in the future. The error will happen more and more infrequently until it goes away completely! At least, until you add more items to be made...
@@ -43,7 +45,7 @@ Enter the value below into the primary board, which is the one sitting on top of
 
 ## Discord
 
-Still have questions? Ask here! https://discord.com/channels/760240626942869546/1078009204792631437/
+Still have questions? Ask here! <https://discord.com/channels/760240626942869546/1078009204792631437/>
 
 ## Is it DRM protected?
 
@@ -83,7 +85,7 @@ Ready-to-build BPs are available upon request. Contact PE902Gaming in DU to arra
 
 ## how to read V-numbers
 
-This project uses the (Semantic Versioning)[https://en.wikipedia.org/wiki/Software_versioning#Semantic_versioning].
+This project uses the [Semantic Versioning](https://en.wikipedia.org/wiki/Software_versioning#Semantic_versioning).
 
 > *Breaking changes are indicated by increasing the **major number** (**high risk**); new, non-breaking features increment the **minor number** (**medium risk**); and all other non-breaking changes increment the **patch number** (**lowest risk**).*
 
@@ -92,8 +94,9 @@ A letter suffix is an indication of a patch-in-progress / waiting for testing, a
 An "-RC" indicates a "release candidate" and _should_ be safe to use in production, but you may also be the victim of a Country Music song plot if you do.
 
 ## History
-(v1.2.2) - In development. Includes fixes for some honeycomb and lumi glass not being produced due to shortages, and moving all user-config items into 'customer'
-* v1.2.1 - Fork of original code by https://github.com/MichelV69 (DU: PE902Gaming). Include changes for screen display priority.
+
+* v1.2.2 - (22apr2024) Includes fixes for some honeycomb and lumi glass not being produced due to shortages, and moving most user-config items into 'customer'
+* v1.2.1 - Fork of original code by <https://github.com/MichelV69> (DU: PE902Gaming). Include changes for screen display priority.
 * v1.1.2 - Big fix on ingredient checking for items with more than one recipe, such as Catalyst 3.
 * v1.1.1 - Minor bug fixes and other improvements
 * v1.1.0 - Minor bug fixes and other improvements
