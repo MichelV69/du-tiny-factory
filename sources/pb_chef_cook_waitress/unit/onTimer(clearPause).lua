@@ -1,0 +1,2 @@
+unit.stopTimer("clearPause")
+clearPause()
