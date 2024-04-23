@@ -1,5 +1,5 @@
 local concat = table.concat
-local sFormat=string.format
+local sFormat = string.format
 
 local function internalSerialize(table, tC, t)
     t[tC] = "{"
@@ -84,4 +84,3 @@ end
 function deserialize(s)
     return load("return " .. s)()
 end
-

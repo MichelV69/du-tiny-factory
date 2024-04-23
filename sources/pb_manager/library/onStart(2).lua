@@ -3,11 +3,11 @@ function clean(param)
     return param
 end
 
-function out(a,b,c,d)
+function out(a, b, c, d)
     system.print(clean(a) .. " " .. clean(b) .. " " .. clean(c) .. " " .. clean(d))
 end
 
-function getName(id) 
+function getName(id)
     if id == nil then return "nil Id" end
     if names[id] == nil then
         name = system.getItem(id).locDisplayNameWithSize
@@ -25,7 +25,7 @@ end
 function getPrimaryIngredients(item_id)
     local recipes = system.getRecipes(item_id)
     if not recipes[1] then return {} end
-    
+
     local primary_ingredients = {}
     local max_produced = 0
     for _, recipe in pairs(recipes) do

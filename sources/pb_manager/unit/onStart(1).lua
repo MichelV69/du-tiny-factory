@@ -1,7 +1,7 @@
 -- PB_MANAGER.LUA
 
 unit.hideWidget()
-manager_version = "1.2.1f"
+manager_version = "1.2.2RC-2"
 
 items = {}
 line_mins = {}
@@ -94,17 +94,15 @@ function getIngredients(items, base, recurse)
 
                         quantity = math.ceil(math.max(input_item.quantity * time_multiplier,
                             ingredients[input_item.id].quantity))
-
                         if recurse == false then quantity = math.ceil(quantity * line_multiplier / num_lines) end
                         if line_mins[input_item.id] then
                             quantity = math.max(line_mins[input_item.id], quantity)
                         end
-                        ingredients[input_item.id].quantity = math.max(quantity, ingredients[input_item.id].quantity)
 
                         -----
                         local tName = string.lower(getName(item.id))
                         if tName == nil then tName = "-=-" end
-                        local boostLevel = 1.22
+                        local boostLevel = 3.42
                         local ms, me = tName:find("luminescent")
                         if ms then
                             local iiName = string.lower(getName(input_item.id))
@@ -112,15 +110,13 @@ function getIngredients(items, base, recurse)
                             if ms2 then
                                 quantity = math.ceil(quantity * boostLevel)
                                 system.print(" >>> debug >>> " ..
-                                    tName ..
-                                    ":" .. iiName .. ":" .. ingredients[input_item.id].quantity .. "=>" .. quantity)
+                                tName .. ":" .. iiName .. ":" .. ingredients[input_item.id].quantity .. "=>" .. quantity)
                             end
                             local ms2, me2 = iiName:find("led")
                             if ms2 then
                                 quantity = math.ceil(quantity * boostLevel)
                                 system.print(" >>> debug >>> " ..
-                                    tName ..
-                                    ":" .. iiName .. ":" .. ingredients[input_item.id].quantity .. "=>" .. quantity)
+                                tName .. ":" .. iiName .. ":" .. ingredients[input_item.id].quantity .. "=>" .. quantity)
                             end
                         end
 
@@ -141,22 +137,26 @@ function getIngredients(items, base, recurse)
                                 if ms2 then
                                     quantity = math.ceil(quantity * boostLevel)
                                     system.print(" >>> debug >>> " ..
-                                        tName ..
-                                        ":" .. iiName .. ":" .. ingredients[input_item.id].quantity .. "=>" .. quantity)
+                                    tName ..
+                                    ":" .. iiName .. ":" .. ingredients[input_item.id].quantity .. "=>" .. quantity)
                                 end
                                 local ms2, me2 = iiName:find("product")
                                 if ms2 then
                                     quantity = math.ceil(quantity * boostLevel)
                                     system.print(" >>> debug >>> " ..
-                                        tName ..
-                                        ":" .. iiName .. ":" .. ingredients[input_item.id].quantity .. "=>" .. quantity)
+                                    tName ..
+                                    ":" .. iiName .. ":" .. ingredients[input_item.id].quantity .. "=>" .. quantity)
                                 end
                             end
                         end
 
-                        local hard_production_cap = 3200
-                        ingredients[input_item.id].quantity = math.min(ingredients[input_item.id].quantity,
-                            hard_production_cap)
+                        ingredients[input_item.id].quantity = math.max(quantity, ingredients[input_item.id].quantity)
+                        local hard_production_cap = 2 * 2800
+                        if ingredients[input_item.id].quantity ~= nil
+                            and ingredients[input_item.id].quantity > hard_production_cap then
+                            ingredients[input_item.id].quantity = math.min(hard_production_cap,
+                                ingredients[input_item.id].quantity)
+                        end
                     end
                 end
             end
@@ -261,5 +261,3 @@ saveTable("linecook", ingredients)
 
 unit.setTimer("buttonsOn", 2.5)
 unit.setTimer("next", 20)
-
---- eof unit.onStart(1).lua ---
