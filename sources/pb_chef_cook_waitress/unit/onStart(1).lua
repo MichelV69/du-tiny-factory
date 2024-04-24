@@ -1,8 +1,7 @@
 -- PB_CHEF_LINECOOK_Waitress.LUA
 ---- (1) ----
-
 unit.hideWidget()
-chef_linecook_version = "1.2.2RC-2"
+chef_linecook_version = "1.2.3a"
 
 function adjustIndustryName(text)
     text = text:lower()

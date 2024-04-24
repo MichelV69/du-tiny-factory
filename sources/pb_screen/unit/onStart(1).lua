@@ -1,6 +1,6 @@
 ---- (1) ----
 unit.hideWidget()
-screen_version = "1.2.2-RC2"
+screen_version = "1.2.3a"
 
 functions = {}
 functions.iterate = function()

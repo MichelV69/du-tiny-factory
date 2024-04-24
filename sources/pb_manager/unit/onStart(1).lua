@@ -1,14 +1,13 @@
 -- PB_MANAGER.LUA
-
 unit.hideWidget()
-manager_version = "1.2.2RC-2"
+manager_version = "1.2.3a"
 
 items = {}
 line_mins = {}
-line_mins[2240749601] = 300 -- pure aluminum
-line_mins[159858782] = 300  -- pure carbon
-line_mins[198782496] = 300  -- pure iron
-line_mins[2589986891] = 300 -- pure silicon
+line_mins[2240749601]   = 300 -- pure aluminum
+line_mins[159858782]    = 300  -- pure carbon
+line_mins[198782496]    = 300  -- pure iron
+line_mins[2589986891]   = 300 -- pure silicon
 
 line_mins[2112763718] = 200 -- pure calcium
 line_mins[2147954574] = 200 -- pure chromium
@@ -85,80 +84,7 @@ function getIngredients(items, base, recurse)
                 local recipe = recipes[1]
                 time_multiplier = math.ceil(300 / recipe.time) -- lua recipe.time is base time, but skills might allow you to make much more in less time, try to accomodate this
 
-                for _, input_item in pairs(inputs) do
-                    if ignore_list[item.id] ~= true then
-                        if ingredients[input_item.id] == nil then
-                            ingredients[input_item.id] = { id = input_item.id, quantity = 0 }
-                            new = true
-                        end
-
-                        quantity = math.ceil(math.max(input_item.quantity * time_multiplier,
-                            ingredients[input_item.id].quantity))
-                        if recurse == false then quantity = math.ceil(quantity * line_multiplier / num_lines) end
-                        if line_mins[input_item.id] then
-                            quantity = math.max(line_mins[input_item.id], quantity)
-                        end
-
-                        -----
-                        local tName = string.lower(getName(item.id))
-                        if tName == nil then tName = "-=-" end
-                        local boostLevel = 3.42
-                        local ms, me = tName:find("luminescent")
-                        if ms then
-                            local iiName = string.lower(getName(input_item.id))
-                            local ms2, me2 = iiName:find("advanced glass")
-                            if ms2 then
-                                quantity = math.ceil(quantity * boostLevel)
-                                system.print(" >>> debug >>> " ..
-                                tName .. ":" .. iiName .. ":" .. ingredients[input_item.id].quantity .. "=>" .. quantity)
-                            end
-                            local ms2, me2 = iiName:find("led")
-                            if ms2 then
-                                quantity = math.ceil(quantity * boostLevel)
-                                system.print(" >>> debug >>> " ..
-                                tName .. ":" .. iiName .. ":" .. ingredients[input_item.id].quantity .. "=>" .. quantity)
-                            end
-                        end
-
-                        hcTypes = { "aged", "galvanized", "glossy", "matte", "painted", "panel", "pattern", "polished",
-                            "stained" }
-                        hcPures = { "aluminium" }
-                        for _, hcType in pairs(hcTypes) do
-                            local ms, me = tName:find(string.lower(hcType))
-                            local ofConcern = false
-                            for _, hcPure in pairs(hcPures) do
-                                local ms1, me1 = tName:find(string.lower(hcPure))
-                                if ms1 then ofConcern = true end
-                            end
-
-                            if ms and ofConcern then
-                                local iiName = string.lower(getName(input_item.id))
-                                local ms2, me2 = iiName:find("pure")
-                                if ms2 then
-                                    quantity = math.ceil(quantity * boostLevel)
-                                    system.print(" >>> debug >>> " ..
-                                    tName ..
-                                    ":" .. iiName .. ":" .. ingredients[input_item.id].quantity .. "=>" .. quantity)
-                                end
-                                local ms2, me2 = iiName:find("product")
-                                if ms2 then
-                                    quantity = math.ceil(quantity * boostLevel)
-                                    system.print(" >>> debug >>> " ..
-                                    tName ..
-                                    ":" .. iiName .. ":" .. ingredients[input_item.id].quantity .. "=>" .. quantity)
-                                end
-                            end
-                        end
-
-                        ingredients[input_item.id].quantity = math.max(quantity, ingredients[input_item.id].quantity)
-                        local hard_production_cap = 2 * 2800
-                        if ingredients[input_item.id].quantity ~= nil
-                            and ingredients[input_item.id].quantity > hard_production_cap then
-                            ingredients[input_item.id].quantity = math.min(hard_production_cap,
-                                ingredients[input_item.id].quantity)
-                        end
-                    end
-                end
+                inputs = bruteFixWrongQuantity(inputs)
             end
         end
     until (recurse == false or new == false)
