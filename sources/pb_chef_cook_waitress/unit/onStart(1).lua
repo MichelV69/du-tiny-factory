@@ -303,7 +303,7 @@ for _, item in pairs(items) do
         tu_quantity = math.ceil(tu_quantity / num_lines)
         if tu_quantity > item.quantity then
             system.print("Transfer Unit upgrading " ..
-            getName(item.id) .. " from " .. item.quantity .. " to " .. tu_quantity)
+                getName(item.id) .. " from " .. item.quantity .. " to " .. tu_quantity)
             item.quantity = tu_quantity
         end
 
@@ -342,18 +342,30 @@ function nestco:new(a)
     setmetatable(b, self)
     self.__index = self; b.functions = a or {}
     b.coroutines = {}
-    function b.update() return b:_update() end; function b.init() return b:_init() end; function b.run() return b:_run() end; function b.update() return
-        b:_update() end; b.init()
+    function b.update() return b:_update() end; function b.init() return b:_init() end; function b.run() return b:_run() end; function b.update()
+        return
+            b:_update()
+    end; b.init()
     b.main = coroutine.create(b.run)
     return b
-end; function nestco:_init() for c, d in pairs(self.functions) do self.coroutines[c] = coroutine.create(d) end end; function nestco:_run() for c, e in pairs(self.coroutines) do
+end; function nestco:_init() for c, d in pairs(self.functions) do self.coroutines[c] = coroutine.create(d) end end; function nestco:_run()
+    for c, e in pairs(self.coroutines) do
         local f = coroutine.status(e)
-        if f == "dead" then self.coroutines[c] = coroutine.create(self.functions[c]) elseif f == "suspended" then assert(
-            coroutine.resume(e)) end
-    end end; function nestco:_update()
+        if f == "dead" then
+            self.coroutines[c] = coroutine.create(self.functions[c])
+        elseif f == "suspended" then
+            assert(
+                coroutine.resume(e))
+        end
+    end
+end; function nestco:_update()
     local f = coroutine.status(self.main)
-    if f == "dead" then self.main = coroutine.create(self.run) elseif f == "suspended" then assert(coroutine.resume(self
-        .main)) end
+    if f == "dead" then
+        self.main = coroutine.create(self.run)
+    elseif f == "suspended" then
+        assert(coroutine.resume(self
+            .main))
+    end
 end
 
 NestCo = nestco:new(functions)
