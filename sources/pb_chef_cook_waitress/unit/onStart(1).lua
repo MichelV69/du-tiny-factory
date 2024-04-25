@@ -1,7 +1,7 @@
 -- PB_CHEF_LINECOOK_Waitress.LUA
 ---- (1) ----
 unit.hideWidget()
-chef_linecook_version = "1.2.3a"
+chef_linecook_version = "1.2.3b"
 
 function adjustIndustryName(text)
     text = text:lower()
@@ -164,8 +164,13 @@ function doBuild(slot, industry, f)
             local outputs = slot.getOutputs()
             if outputs and outputs[1] and outputs[1].id == item.id then
                 y(f)
-                slot.startMaintain(item.quantity * maintainMultiplier)
-                system.print(industryname .. " maintaining " .. getName(item.id) .. " x" .. item.quantity)
+                ---- <MRV>
+                local toMaintain = mceil(item.quantity * maintainMultiplier) -- NB "even if the transfer unit is drowning do not pass it a float" -- BBDarth
+                system.print(industryname .. " toMaintain " .. toMaintain)
+                ---- <MRV>
+
+                slot.startMaintain(toMaintain)
+                system.print(industryname .. " maintaining " .. getName(item.id) .. " x" .. toMaintain)
 
                 setKnown(industryname, item.id)
                 -- get the new status, e.g. do we need schematics?
@@ -326,10 +331,12 @@ if count == 0 then
     return
 end
 
+-- --- <MRV>
 maintainMultiplier = 1
-if unitName == "waitress" then
-    maintainMultiplier = math.max(maintainMultiplier, feed_multiplier)
+if unitkey == "waitress" then
+    maintainMultiplier = math.max(maintainMultiplier, feed_multiplier) * num_lines
 end
+-- --- <MRV>
 
 unit.setTimer("next", 1)
 unit.setTimer("ping", 5)

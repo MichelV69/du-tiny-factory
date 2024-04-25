@@ -4,11 +4,11 @@ function strSplit(a, b)
     for c in (a .. b):gmatch("(.-)" .. b) do table.insert(result, c) end; return result
 end
 
-mfloor = math.floor
-mceil = math.ceil
-mmin = math.min
-mmax = math.max
-mrandom = math.random
+mfloor   = math.floor
+mceil    = math.ceil
+mmin     = math.min
+mmax     = math.max
+mrandom  = math.random
 unitName = unit.getName()
 
 function newStack()
