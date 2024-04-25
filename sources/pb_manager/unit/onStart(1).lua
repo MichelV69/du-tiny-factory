@@ -1,6 +1,6 @@
 -- PB_MANAGER.LUA
 unit.hideWidget()
-manager_version = "1.2.3b"
+manager_version = "1.2.3c"
 
 items = {}
 line_mins = {}

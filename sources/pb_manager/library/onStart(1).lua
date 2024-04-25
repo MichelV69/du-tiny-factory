@@ -1,4 +1,5 @@
-local concat = table.concat
+---- (1) ----
+local concat  = table.concat
 local sFormat = string.format
 
 local function internalSerialize(table, tC, t)

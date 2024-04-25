@@ -1,3 +1,4 @@
+---- (2) ----
 function clean(param)
     if param == nil then return " " end
     return param

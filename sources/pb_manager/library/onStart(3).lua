@@ -26,7 +26,7 @@ end
 function fixHCPureQty(item_id, input_item_id, ingredients)
     hcTypes = { "aged", "galvanized", "glossy", "matte", "painted", "panel", "pattern", "polished",
         "stained" }
-    hcPures = { "aluminium", "steel", "plastic" }
+    hcPures = { "aluminium", "steel", "plastic", "carbon fiber" }
 
     local tName = string.lower(getName(item_id))
     local quantity = 0
@@ -57,17 +57,28 @@ function fixHCPureQty(item_id, input_item_id, ingredients)
     return quantity
 end
 
-function fixPureGases(item_id, input_item_id, ingredients)
-    gasTypes = { "pure oxygen", "pure hydrogen" }
+function fixFuelStock(item_id, input_item_id, ingredients)
     local tName = string.lower(getName(item_id))
     local quantity = 0
 
     if tName == nil then tName = "-=-" end
-    for _, gasType in pairs(gasTypes) do
-        local ms1, me1 = tName:find(string.lower(gasType))
-        if ms1 then quantity = 200 end
+    local ms, me = tName:find("fuel")
+    if not ms then
+        return quantity
     end
 
+    system.print(" >>> ------ >>> ")
+    fuelStocks = { "oxygen", "hydrogen" }
+    for _, fuelStock in pairs(fuelStocks) do
+        local iiName = string.lower(getName(input_item_id))
+        local ms1, me1 = iiName:find(fuelStock)
+        if ms1 then
+            local fuelPerChemFactory = 88
+            quantity                 = num_lines * fuelPerChemFactory
+            system.print(" >>> fixFuelStock >>> " ..
+                tName .. ":" .. iiName .. ":" .. ingredients[input_item_id].quantity .. "=>" .. quantity)
+        end
+    end
     return quantity
 end
 
@@ -89,7 +100,7 @@ function bruteFixWrongQuantity(recurse, item_id, ingredients, inputs, line_multi
         -----
         quantity = math.max(quantity, fixLumiGlassQty(item_id, input_item.id, ingredients))
         quantity = math.max(quantity, fixHCPureQty(item_id, input_item.id, ingredients))
-        quantity = math.max(quantity, fixPureGases(item_id, input_item.id, ingredients))
+        quantity = math.max(quantity, fixFuelStock(item_id, input_item.id, ingredients))
         --- system.print(" >>> [quantity: " ..quantity .. "][ingredients.quantity: " .. ingredients[input_item.id].quantity .."]")
 
         ---
