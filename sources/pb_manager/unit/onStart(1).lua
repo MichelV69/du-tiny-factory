@@ -1,6 +1,6 @@
 -- PB_MANAGER.LUA
 unit.hideWidget()
-manager_version = "1.2.3a"
+manager_version = "1.2.3b"
 
 items = {}
 line_mins = {}
@@ -76,20 +76,16 @@ function getIngredients(items, base, recurse)
             local item_id = item.id
 
             -- determine what we will need to build the item
-            local recipes = system.getRecipes(item_id)
             local inputs = getPrimaryIngredients(item_id)
             local time_multiplier = 1
 
-            if recipes and recipes[1] then
-                local recipe = recipes[1]
-                time_multiplier = math.ceil(300 / recipe.time) -- lua recipe.time is base time, but skills might allow you to make much more in less time, try to accomodate this
-
-                inputs = bruteFixWrongQuantity(inputs)
+            if inputs and inputs[1] then
+                items = bruteFixWrongQuantity(recurse, item_id, ingredients, inputs, line_multiplier, num_lines)
             end
         end
     until (recurse == false or new == false)
 
-    return ingredients
+    return items
 end
 
 function addBuild(id, quantity, is_input)
