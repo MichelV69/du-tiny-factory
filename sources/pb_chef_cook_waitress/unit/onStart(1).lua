@@ -1,7 +1,7 @@
 -- PB_CHEF_LINECOOK_Waitress.LUA
 ---- (1) ----
 unit.hideWidget()
-chef_linecook_version = "1.2.3b"
+chef_linecook_version = "1.2.3e"
 
 function adjustIndustryName(text)
     text = text:lower()
@@ -18,9 +18,7 @@ end
 
 function getStack(industryname)
     local entryStack = newStack()
-    local isTransferUnit = (industryname == "unit l")
-
-    if isTransferUnit then
+    if isATransferUnit(industryname) then
         local added = {}
         for count = 1, 30 do
             local ikey = "needed" .. count
@@ -44,7 +42,7 @@ function getStack(industryname)
     for id, item in pairs(requirements) do
         local known = getKnown(item.id) -- do we already know this item's proper industry?
 
-        if isTransferUnit or (known == "" or known == industryname) then
+        if isATransferUnit(industryname) or (known == "" or known == industryname) then
             entryStack.push(item)
         end
     end
@@ -52,7 +50,8 @@ function getStack(industryname)
 end
 
 function checkForOverproducing(slot, info)
-    if info.state == 2 or info.state == 7 then
+    if info.state == IndustryStatus.running
+        or info.state == IndustryStatus.jammed then
         local outputs = info.currentProducts
         local itemId = outputs[1].id
         local current = 0
@@ -93,7 +92,7 @@ function doIndustry(slot, f)
         cook_check = cook_check + 1
         while cook_check < 10 do y(f) end -- wait for everyone do be done
 
-        if state ~= 2 then doBuild(slot, industry, f) end
+        if state ~= IndustryStatus.running then doBuild(slot, industry, f) end
     else
         cook_check = cook_check + 1
     end
@@ -107,18 +106,18 @@ function checkCooking(slot, industry, f)
     local info = slot.getInfo()
     local state = info.state
 
-    if state == 2 then -- cooking something
+    if state == IndustryStatus.running then -- cooking something
         outputs = slot.getOutputs()
         if outputs and outputs[1] then
             cooking[outputs[1].id] = true
             --- system.print(industryname .. " cooking " .. getName(outputs[1].id))
-            if industryname ~= "unit l" then setKnown(outputs[1].id, industry.name) end
+            if isATransferUnit(industryname) then setKnown(outputs[1].id, industry.name) end
 
             -- make sure we're not cooking too many, sometimes a bug will put in way too many
         end
     end
-    checkForOverproducing(slot, info)
 
+    checkForOverproducing(slot, info)
     return state
 end
 
@@ -140,18 +139,31 @@ function doBuild(slot, industry, f)
 
     -- system.print("Checking industry for " .. industryname .. " with stack size " .. stack.size .. " state: " .. state)
 
-    while state ~= 2 and skip == false and stack.size > 0 do
-        if state == 7 or state == 2 then skip = true end
-        if state == 3 and industryname == "refiner m" then skip = true end
+    while state ~= IndustryStatus.running and skip == false and stack.size > 0 do
+        if state == IndustryStatus.no_schemas
+            or state == IndustryStatus.running then
+            skip = true
+        end
+        if state == IndustryStatus.jammed
+            and industryname == "refiner m" then
+            skip = true
+        end
+        if state == IndustryStatus.running
+            and isATransferUnit(industryname) then
+            skip = true
+        end                                                                -- do not interfere with large transfers industry
 
         if skip then
-            system.print("Skipping " .. industryname .. " with state " .. state)
+            system.print(">>> Skipping " .. industryname .. " with state " .. state)
             return
         end
 
         local item = stack.pop()
         if item ~= nil then
-            if state ~= 1 then -- no need to stop idle industry
+            system.print("+++ checking " .. industryname .. " with state " .. state)
+            if state ~= IndustryStatus.idle then -- no need to stop idle industry
+                system.print("--- stopping " ..
+                industryname .. " with state running:" .. tostring(state == IndustryStatus.running))
                 y(f)
                 slot.stop(false, false)
             end
@@ -164,10 +176,8 @@ function doBuild(slot, industry, f)
             local outputs = slot.getOutputs()
             if outputs and outputs[1] and outputs[1].id == item.id then
                 y(f)
-                ---- <MRV>
                 local toMaintain = mceil(item.quantity * maintainMultiplier) -- NB "even if the transfer unit is drowning do not pass it a float" -- BBDarth
                 system.print(industryname .. " toMaintain " .. toMaintain)
-                ---- <MRV>
 
                 slot.startMaintain(toMaintain)
                 system.print(industryname .. " maintaining " .. getName(item.id) .. " x" .. toMaintain)
@@ -177,18 +187,20 @@ function doBuild(slot, industry, f)
                 y(f)
                 local info = slot.getInfo()
                 state = info.state
-                if state == 2 or state == 6 or state == 7 then
+                if state == IndustryStatus.running
+                    or state == IndustryStatus.pending
+                    or state == IndustryStatus.no_schemas then
                     cooking[outputs[1].id] = true
                 end
 
-                if industryname == "unit l" then
+                if isATransferUnit(industryname) then
                     -- some items, e.g. basic pipes, need at least 200 for transfers
                     -- we need to let the other boards know this
                     local inputs = slot.getInputs()
                     if inputs[1].quantity > 1 then
                         databank.setIntValue("transfer:" .. item.id, mfloor(inputs[1].quantity))
                     end
-                elseif unitname == "chef" and state == 3 then
+                elseif unitname == "chef" and state == IndustryStatus.jammed then
                     local inputs = slot.getInputs()
                     local count = 0
                     for _, input_item in pairs(inputs) do
@@ -228,7 +240,7 @@ end
 slot_status_saved = {}
 function setKnown(industryname, id)
     local key = "known:" .. id
-    if industryname ~= "unit l" and slot_status_saved[key] == nil then
+    if isNotATransferUnit(industryname) and slot_status_saved[key] == nil then
         databank.setStringValue(key, industryname)
         known_industry[key] = industryname
         slot_status_saved[key] = true
@@ -274,15 +286,17 @@ for slot_name, slot in pairs(unit) do
     end
 end
 
+unitname = unit.getName():lower()
+unitkey  = unitname:gsub("%d$", "")
+
 for id, industry in pairs(industries) do
     databank.setStringValue("slot" .. industry.id, unitName)
 end
 
 databank.setStringValue("chef_linecook_version", chef_linecook_version)
-databank.setStringValue("status:" .. unit.getName(), "active")
+databank.setStringValue("status:" .. unitname, "active")
 
-unitname = unit.getName():lower()
-unitkey = unitname:gsub("%d$", "")
+
 local raw = databank.getStringValue(unitkey)
 if raw == "" then
     system.print("empty value for " .. unitkey)
@@ -298,7 +312,7 @@ if num_lines <= 0 then
 elseif num_lines > 1 then
     num_lines = mceil(num_lines / 1.25)
 end
-items = deserialize(databank.getStringValue(unit.getName():gsub("%d$", "")))
+items = deserialize(databank.getStringValue(unitkey))
 requirements = {}
 local count = 0
 for _, item in pairs(items) do
@@ -331,14 +345,13 @@ if count == 0 then
     return
 end
 
--- --- <MRV>
 maintainMultiplier = 1
 if unitkey == "waitress" then
     maintainMultiplier = math.max(maintainMultiplier, feed_multiplier) * num_lines
 end
--- --- <MRV>
 
-unit.setTimer("next", 1)
+local nextTickSeconds = 1.0
+unit.setTimer("next", nextTickSeconds)
 unit.setTimer("ping", 5)
 
 -- do not change the following
