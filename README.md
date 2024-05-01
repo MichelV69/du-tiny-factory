@@ -32,8 +32,8 @@ Enter the value below into the primary board, which is the one sitting on top of
 ### Equipment Names
 
 * Do NOT rename your industry units.  DUTF requies that it be able to read the "original" name to figure out what job to give to what equipment.
-* Software / Programming boards and Manual Switches connected to them ***must** have a digit as the last character for "chef", "waitress" and "linecook".  It cannot be a "zero";  so "chef1" is okay, but "chef01" is not.
-* Any Switch controlled by Manager MUST have the same name as the device they are connected to.  So, the Switch for "Linecook1" must be named "Linecook1", the Switch for "Chef2" must be named "Chef2", etcetera.
+* Software / Programming boards and Manual Switches connected to them **must** have a digit as the last character for "chef", "waitress" and "linecook".  It cannot be a "zero";  so "chef1" is okay, but "chef01" is **not**
+* Any Switch controlled by Manager **must** have the same name as the device they are connected to.  So, the Switch for "linecook1" must be named "linecook1", the Switch for "chef2" must be named "chef2", etcetera.
 
 ## FAQ
 
@@ -96,6 +96,7 @@ An "-RC" indicates a "release candidate" and *should* be safe to use in producti
 
 ## History
 
+* v1.2.3 - (unreleased) Improvements to "large feed lots" handling, fixes to crashed board auto-restart, documentation.
 * v1.2.2 - (22apr2024) Includes fixes for some honeycomb and lumi glass not being produced due to shortages, and moving most user-config items into 'customer'
 * v1.2.1 - Fork of original code by <https://github.com/MichelV69> (DU: PE902Gaming). Include changes for screen display priority.
 * v1.1.2 - Big fix on ingredient checking for items with more than one recipe, such as Catalyst 3.
