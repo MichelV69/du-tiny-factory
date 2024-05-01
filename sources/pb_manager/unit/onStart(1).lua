@@ -1,67 +1,80 @@
 -- PB_MANAGER.LUA
 unit.hideWidget()
-manager_version = "1.2.3c"
+manager_version       = "1.2.3f"
 
-items = {}
-line_mins = {}
-line_mins[2240749601]   = 300 -- pure aluminum
-line_mins[159858782]    = 300  -- pure carbon
-line_mins[198782496]    = 300  -- pure iron
-line_mins[2589986891]   = 300 -- pure silicon
+items                 = {}
+line_mins             = {}
+line_mins[2240749601] = 300   -- pure aluminum
+line_mins[159858782]  = 300   -- pure carbon
+line_mins[198782496]  = 300   -- pure iron
+line_mins[2589986891] = 300   -- pure silicon
 
-line_mins[2112763718] = 200 -- pure calcium
-line_mins[2147954574] = 200 -- pure chromium
-line_mins[1466453887] = 200 -- pure copper
-line_mins[3603734543] = 200 -- pure sodium
+line_mins[2112763718] = 200   -- pure calcium
+line_mins[2147954574] = 200   -- pure chromium
+line_mins[1466453887] = 200   -- pure copper
+line_mins[3603734543] = 200   -- pure sodium
 
-line_mins[3810111622] = 100 -- pure lithium
-line_mins[3012303017] = 100 -- pure nickel
-line_mins[1807690770] = 100 -- pure silver
-line_mins[3822811562] = 100 -- pure sulfur
+line_mins[3810111622] = 100   -- pure lithium
+line_mins[3012303017] = 100   -- pure nickel
+line_mins[1807690770] = 100   -- pure silver
+line_mins[3822811562] = 100   -- pure sulfur
 
-dont_assign = {             -- list of raw minerals, these can't be produced, so they need to be ignored
-    299255727,              -- coal
-    4234772167,             -- hematite
-    262147665,              -- bauxite
-    3724036288,             -- quartz
+dont_assign           = {     -- list of raw minerals, these can't be produced, so they need to be ignored
+    299255727,                -- coal
+    4234772167,               -- hematite
+    262147665,                -- bauxite
+    3724036288,               -- quartz
 
-    2029139010,             -- chromite
-    3086347393,             -- limestone
-    2289641763,             -- malachite
-    343766315,              -- natron
+    2029139010,               -- chromite
+    3086347393,               -- limestone
+    2289641763,               -- malachite
+    343766315,                -- natron
 
-    1050500112,             -- acanthite
-    1065079614,             -- garnierette
-    3837858336,             -- petalite
-    4041459743,             -- pyrite
+    1050500112,               -- acanthite
+    1065079614,               -- garnierette
+    3837858336,               -- petalite
+    4041459743,               -- pyrite
 
-    3546085401,             -- cobaltite
-    1467310917,             -- cryolite
-    1866812055,             -- gold nuggets
-    271971371,              -- kolbeckite
+    3546085401,               -- cobaltite
+    1467310917,               -- cryolite
+    1866812055,               -- gold nuggets
+    271971371,                -- kolbeckite
 
-    789110817,              -- columbite
-    629636034,              -- ilmenite
-    3934774987,             -- rhodonite
-    2162350405,             -- vanadinite
+    789110817,                -- columbite
+    629636034,                -- ilmenite
+    3934774987,               -- rhodonite
+    2162350405,               -- vanadinite
 }
 
-ignore_list = {} -- will be populated by the dont_assign list
+ignore_list           = {} -- will be populated by the dont_assign list
 
 function next()
-    time = math.floor(system.getArkTime())
+    currentTime = math.floor(system.getArkTime())
 
-    out("status checking... ", time)
+    out("status checking at timestamp: [", currentTime, "]")
 
     for name, slot in pairs(buttons) do
-        timeping = databank.getIntValue("ping:" .. name)
-        if (time - timeping) > 30 then
-            while slot.isActive() == 1 do slot.deactivate() end
+        lastPing = databank.getIntValue("ping:" .. name)
+        out(">>> lastPing: [", lastPing, "]")
+        if isStillActive(currentTime, lastPing) then
+            out(name, " is still running")
+        else
+            out(name, " is overdue for ping.  Trying to reset.")
+            slot.deactivate()
+            local resetAttempts = 1
+            while resetAttempts < 10 do
+                if slot.isActive() then slot.deactivate() end
+                resetAttempts = resetAttempts + 1
+            end
             databank.clearValue("status:" .. name)
-            out("toggling", name)
-        end -- turn it off, let the buttonOn timer turn it back on
+        end
     end
-end
+end --- function next()
+
+function isStillActive(currentTime, lastPing)
+    local stillActiveMaxPing = 30
+    return (stillActiveMaxPing > (currentTime - lastPing))
+end --- function isStillActive
 
 function getIngredients(items, base, recurse)
     local new = false
@@ -181,5 +194,5 @@ saveTable("waitress", ingredients)
 ingredients = getIngredients(ingredients, ingredients, true)
 saveTable("linecook", ingredients)
 
-unit.setTimer("buttonsOn", 2.5)
-unit.setTimer("next", 20)
+unit.setTimer("buttonsOn", 11)
+unit.setTimer("next", 22)

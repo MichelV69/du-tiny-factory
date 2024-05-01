@@ -12,7 +12,7 @@ The Tiny Factory will handle the industry lines for you. Just tell it what you w
 
 <https://du-creators.org/makers/Squizz/ship/Tiny%20Factory>
 
-## Instructions:
+## Instructions
 
 To add an item, look it up by name on <https://du-lua.dev/#/items>
 Enter the value below into the primary board, which is the one sitting on top of the pedestal. As you see in the examples, left side is the item id, right side is the item quantity. Then turn on the primary board! The programming boards will work together to handle the rest.
@@ -33,8 +33,9 @@ Enter the value below into the primary board, which is the one sitting on top of
 
 * Do NOT rename your industry units.  DUTF requies that it be able to read the "original" name to figure out what job to give to what equipment.
 * Software / Programming boards and Manual Switches connected to them ***must** have a digit as the last character for "chef", "waitress" and "linecook".  It cannot be a "zero";  so "chef1" is okay, but "chef01" is not.
+* Any Switch controlled by Manager MUST have the same name as the device they are connected to.  So, the Switch for "Linecook1" must be named "Linecook1", the Switch for "Chef2" must be named "Chef2", etcetera.
 
-## FAQ:
+## FAQ
 
 * I want to change what gets made, how do I do that? Just CTRL-L on the primary board, edit the values, and click Apply. Then turn the board on! If it was already on, turn it off and then back on again.
 * I want to make things like honeycomb, scrap, fuel, or warp cells, how do I do that? The Tiny Factory's default configuration only produces things that are made with Assemblers. If you'd like to customize the final products, remove one an assembler of your choice and replace it with the industry that can make your preferred final product. Link Line 1 and Line 2 Hubs to this industry as inputs, and link the Output Hub as Output. Finally, link the industry to the "chef" programming board as this board handles the final product production. After doing this turn your factory off and back on again!
@@ -77,21 +78,21 @@ No! Completely DRM FREE! Play with the code, break it, improve it, have fun!
 * 1x Uncommon Assembly Line S
 * 1x Uncommon Assembly Line XS
 
-# Blueprints
+## Blueprints
 
 Ready-to-build BPs are available upon request. Contact PE902Gaming in DU to arrange to get one.
 
-# Updates
+## Updates
 
-## how to read V-numbers
+### how to read V-numbers
 
 This project uses the [Semantic Versioning](https://en.wikipedia.org/wiki/Software_versioning#Semantic_versioning).
 
 > *Breaking changes are indicated by increasing the **major number** (**high risk**); new, non-breaking features increment the **minor number** (**medium risk**); and all other non-breaking changes increment the **patch number** (**lowest risk**).*
 
-A letter suffix is an indication of a patch-in-progress / waiting for testing, and should _**never**_ be used in a production environment.
+A letter suffix is an indication of a patch-in-progress / waiting for testing, and should ***never*** be used in a production environment.
 
-An "-RC" indicates a "release candidate" and _should_ be safe to use in production, but you may also be the victim of a Country Music song plot if you do.
+An "-RC" indicates a "release candidate" and *should* be safe to use in production, but you may also be the victim of a Country Music song plot if you do.
 
 ## History
 

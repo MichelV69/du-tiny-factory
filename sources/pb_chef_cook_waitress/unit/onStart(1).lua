@@ -1,11 +1,11 @@
 -- PB_CHEF_LINECOOK_Waitress.LUA
 ---- (1) ----
 unit.hideWidget()
-chef_linecook_version = "1.2.3e"
+chef_linecook_version = "1.2.3f"
 
 function adjustIndustryName(text)
     text = text:lower()
-    split = strSplit(text, " ")
+    local split = strSplit(text, " ")
     text = split[2]
     for i = 3, 10 do
         if split[i] == nil then split[i] = "" end
@@ -151,7 +151,7 @@ function doBuild(slot, industry, f)
         if state == IndustryStatus.running
             and isATransferUnit(industryname) then
             skip = true
-        end                                                                -- do not interfere with large transfers industry
+        end -- do not interfere with large transfers industry
 
         if skip then
             system.print(">>> Skipping " .. industryname .. " with state " .. state)
@@ -163,7 +163,7 @@ function doBuild(slot, industry, f)
             system.print("+++ checking " .. industryname .. " with state " .. state)
             if state ~= IndustryStatus.idle then -- no need to stop idle industry
                 system.print("--- stopping " ..
-                industryname .. " with state running:" .. tostring(state == IndustryStatus.running))
+                    industryname .. " with state running:" .. tostring(state == IndustryStatus.running))
                 y(f)
                 slot.stop(false, false)
             end
@@ -293,13 +293,13 @@ for id, industry in pairs(industries) do
     databank.setStringValue("slot" .. industry.id, unitName)
 end
 
-databank.setStringValue("chef_linecook_version", chef_linecook_version)
+databank.setStringValue(unitname .. "_version", chef_linecook_version)
 databank.setStringValue("status:" .. unitname, "active")
-
+out("INFO: ", unitname, " is alive as type [", unitkey, "]")
 
 local raw = databank.getStringValue(unitkey)
 if raw == "" then
-    system.print("empty value for " .. unitkey)
+    out("ERROR: cannot find manager entry for [", unitkey, "]")
     return unit.exit()
 end
 
