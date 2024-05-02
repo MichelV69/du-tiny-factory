@@ -13,12 +13,10 @@ function fixLumiGlassQty(item_id, input_item_id, ingredients)
     local ms2, me2 = iiName:find("advanced glass")
     if ms2 then
         quantity = 1200
-        --- system.print(" >>> fixLumiGlassQty >>> " .. tName .. ":" .. iiName .. ":" .. ingredients[input_item_id].quantity .. "=>" .. quantity)
     end
     local ms2, me2 = iiName:find("led")
     if ms2 then
         quantity = 120
-        --- system.print(" >>> fixLumiGlassQty >>> " .. tName .. ":" .. iiName .. ":" .. ingredients[input_item_id].quantity .. "=>" .. quantity)
     end
     return quantity
 end
@@ -45,12 +43,10 @@ function fixHCPureQty(item_id, input_item_id, ingredients)
             local ms2, me2 = iiName:find("pure")
             if ms2 then
                 quantity = 2400
-                --- system.print(" >>> fixHCPureQty >>> " .. tName .. ":" .. iiName .. ":" .. ingredients[input_item_id].quantity .. "=>" .. quantity)
             end
             local ms2, me2 = iiName:find("product")
             if ms2 then
                 quantity = 2800
-                ---system.print(" >>> fixHCPureQty >>> " .. tName ..  ":" .. iiName .. ":" .. ingredients[input_item_id].quantity .. "=>" .. quantity)
             end
         end
     end
@@ -75,10 +71,49 @@ function fixFuelStock(item_id, input_item_id, ingredients)
         if ms1 then
             local fuelPerChemFactory = 88
             quantity                 = num_lines * fuelPerChemFactory
-            system.print(" >>> fixFuelStock >>> " ..
-                tName .. ":" .. iiName .. ":" .. ingredients[input_item_id].quantity .. "=>" .. quantity)
         end
     end
+    return quantity
+end
+
+function fixScrapStock(item_id, input_item_id, ingredients)
+    local tName = string.lower(getName(item_id))
+    local quantity = 0
+
+    if tName == nil then tName = "-=-" end
+    local ms, me = tName:find("scrap")
+    if not ms then
+        return quantity
+    end
+
+    system.print(" >>> ------ >>> ")
+    t1Stocks = { "iron" }
+    for _, stockMaterial in pairs(t1Stocks) do
+        local iiName = string.lower(getName(input_item_id))
+        local ms1, me1 = iiName:find(stockMaterial)
+        if ms1 then
+            quantity = 7200
+        end
+    end
+
+    t2Stocks = { "chromium" }
+    for _, stockMaterial in pairs(t2Stocks) do
+        local iiName = string.lower(getName(input_item_id))
+        local ms1, me1 = iiName:find(stockMaterial)
+        if ms1 then
+            quantity = 910
+        end
+    end
+
+    t3Stocks = { "sulphur" }
+    for _, stockMaterial in pairs(t3Stocks) do
+        local iiName = string.lower(getName(input_item_id))
+        local ms1, me1 = iiName:find(stockMaterial)
+        if ms1 then
+            quantity = 130
+        end
+    end
+
     return quantity
 end
 
@@ -101,6 +136,7 @@ function bruteFixWrongQuantity(recurse, item_id, ingredients, inputs, line_multi
         quantity = math.max(quantity, fixLumiGlassQty(item_id, input_item.id, ingredients))
         quantity = math.max(quantity, fixHCPureQty(item_id, input_item.id, ingredients))
         quantity = math.max(quantity, fixFuelStock(item_id, input_item.id, ingredients))
+        quantity = math.max(quantity, fixScrapStock(item_id, input_item.id, ingredients))
         --- system.print(" >>> [quantity: " ..quantity .. "][ingredients.quantity: " .. ingredients[input_item.id].quantity .."]")
 
         ---
@@ -110,8 +146,6 @@ function bruteFixWrongQuantity(recurse, item_id, ingredients, inputs, line_multi
         if line_mins[input_item.id] then
             quantity = math.max(quantity, line_mins[input_item.id])
         end
-        --- system.print(" >>> [quantity:" ..quantity .. "][ingredients.quantity:" .. ingredients[input_item.id].quantity .."]")
-        --- system.print(" >>> ------------------- ")
 
         ---
         ingredients[input_item.id].quantity = math.max(quantity, ingredients[input_item.id].quantity)
