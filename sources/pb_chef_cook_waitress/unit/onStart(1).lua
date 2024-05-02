@@ -350,7 +350,8 @@ if unitkey == "waitress" then
     maintainMultiplier = math.max(maintainMultiplier, feed_multiplier) * num_lines
 end
 
-local nextTickSeconds = 1.0
+local tickRatio = mceil((2.37 / 3.0) * 100) / 100
+local nextTickSeconds = tickRatio * num_lines
 unit.setTimer("next", nextTickSeconds)
 unit.setTimer("ping", 5)
 
