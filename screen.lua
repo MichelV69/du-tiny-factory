@@ -9,7 +9,7 @@ local topMargin = 22                               --don't change at random
 local custom_col_header_yPos = -1                  --don't change at random
 ---
 --- ---
-pb_customer_version = "1.2.2-RC2"
+pb_customer_version = "1.2.3a"
 local rslib = require('rslib')
 if not init then
     rx, ry = getResolution()
@@ -23,6 +23,7 @@ local fontHeader = loadFont('RobotoMono', fontHeaderSize)
 local l = {}
 l.data = createLayer()
 l.banner = createLayer()
+l.backdrops = createLayer()
 
 local y_pos = DEFAULT_COL_HEADER_YPOS
 if custom_col_header_yPos ~= -1 then y_pos = custom_col_header_yPos end
