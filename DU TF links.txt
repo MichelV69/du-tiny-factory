@@ -1,0 +1,39 @@
+Input Hub --> links to line 1 refiner(s) and Line 2 refiner(s)
+
+Line 1 hub --> Inputs from Line 1 machines, outputs to Line 2 machines & final assemblies
+Line 2 hub --> Inputs from Line 2 machines, outputs to Line 1 machines & final assemblies
+
+Output hub --> inputs from final assembly machines (can include honeycomb, glass and chemical if you want to make stuff other than parts/elements) - these are separate machines to the production line ones
+
+
+
+customer switch links to customer (all lower case) PB
+customer pb links to manager switch and databank
+
+manager switch links to manager PB
+manager PB links to core, chef switch, linecook1 switch, linecook2 switch, databank, screen switch and screen(physical)
+
+linecook1 switch links to linecook1 PB
+linecook1 PB links to databank and all production line machines in line 1
+
+linecook2 switch links to linecook2 PB
+linecook2 PB links to databank and all production line machines in line 2
+
+chef switch links to chef PB
+chef PB links to databank and final output machines
+
+screen switch links to screen PB
+screen PB links to core, databank and screen (physical)
+
+paste the necessary scripts onto the PB's (note chef and linecook PB's are the same script, NO changes needed).
+
+load up ore into input container.
+edit the customer scrips to add the required ID's and qty's - examples are included in the script
+press the customer button to start the process.
+
+if you are running honeycomb sometimes you'll need to seed the Line hubs as the script can get confused as it has refiners that try to make the h/c, which locks them out from making the base ore required for the system.
+
+I think this covers most of the setup.
+Regards
+
+KestrelPC
