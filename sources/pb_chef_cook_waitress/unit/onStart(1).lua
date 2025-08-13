@@ -1,7 +1,7 @@
 -- PB_CHEF_LINECOOK_Waitress.LUA
 ---- (1) ----
 unit.hideWidget()
-chef_linecook_version = "1.2.3f"
+chef_linecook_version = "1.2.3g"
 
 function adjustIndustryName(text)
     text = text:lower()
@@ -318,11 +318,20 @@ local count = 0
 for _, item in pairs(items) do
     if unitkey == "linecook" then
         local tu_quantity = databank.getIntValue("transfer:" .. item.id)
-        tu_quantity = math.ceil(tu_quantity / num_lines)
-        if tu_quantity > item.quantity then
-            system.print("Transfer Unit upgrading " ..
-                getName(item.id) .. " from " .. item.quantity .. " to " .. tu_quantity)
-            item.quantity = tu_quantity
+        tu_quantity = mceil(tu_quantity / num_lines)
+        if (tu_quantity > 0) then
+            if tu_quantity > item.quantity then
+                system.print("Transfer Unit upgrading " ..
+                    getName(item.id) .. " from " .. item.quantity .. " to " .. tu_quantity)
+                item.quantity = tu_quantity
+            else
+                if (item.quantity % tu_quantity) then
+                    out("tu_quantity fix:", tu_quantity)
+                    local fix_factor = mceil(item.quantity / tu_quantity)
+                    item.quantity = fix_factor * tu_quantity
+                    out("new item.quantity:", item.quantity)
+                end
+            end
         end
 
         -- some items we should never have more than a few of, such as catalysts
