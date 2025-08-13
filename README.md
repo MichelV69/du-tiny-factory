@@ -17,6 +17,7 @@ The Tiny Factory will handle the industry lines for you. Just tell it what you w
 To add an item, look it up by name on <https://du-lua.dev/#/items>
 Enter the value below into the primary board, which is the one sitting on top of the pedestal. As you see in the examples, left side is the item id, right side is the item quantity. Then turn on the primary board! The programming boards will work together to handle the rest.
 
+```lua
     -- some example complicated items for testing your new Tiny Factory
     items[286542481] = 1 -- emergency control unit xs
     items[184261427] = 1 -- screen xs
@@ -28,6 +29,7 @@ Enter the value below into the primary board, which is the one sitting on top of
     items[2532454166] = 1 -- wing s
     items[404188468] = 1 -- wing m
     items[2375915630] = 1 -- atmo engine l
+```
 
 ### Equipment Names
 
@@ -35,14 +37,33 @@ Enter the value below into the primary board, which is the one sitting on top of
 * Software / Programming boards and Manual Switches connected to them **must** have a digit as the last character for "chef", "waitress" and "linecook".  It cannot be a "zero";  so "chef1" is okay, but "chef01" is **not**
 * Any Switch controlled by Manager **must** have the same name as the device they are connected to.  So, the Switch for "linecook1" must be named "linecook1", the Switch for "chef2" must be named "chef2", etcetera.
 
+## DIY "Wiring"
+
+See the [DU TF links plain text file](DU TF links.txt) file enclosed for an explanation by "KetrelPC" on how everything plugs in. Also, check the "images" folder for some screen snaps of links.
+
 ## FAQ
 
-* I want to change what gets made, how do I do that? Just CTRL-L on the primary board, edit the values, and click Apply. Then turn the board on! If it was already on, turn it off and then back on again.
-* I want to make things like honeycomb, scrap, fuel, or warp cells, how do I do that? The Tiny Factory's default configuration only produces things that are made with Assemblers. If you'd like to customize the final products, remove one an assembler of your choice and replace it with the industry that can make your preferred final product. Link Line 1 and Line 2 Hubs to this industry as inputs, and link the Output Hub as Output. Finally, link the industry to the "chef" programming board as this board handles the final product production. After doing this turn your factory off and back on again!
-* What is this "Unknown Schematic" I see in the LUA chat window? This is normal. The game's scripting does not provide information on what industry units create which items, so the boards have to figure it out. When a board tries to apply an element to an industry that does not make that element, you will see the error. When a successful match is found, it will be saved to the databank and used in the future. The error will happen more and more infrequently until it goes away completely! At least, until you add more items to be made...
-* Do I have to be present for this to work? Yes! Like any LUA in game, a player must be present. If you go too far, or turn off the primary boards, the industries will eventually finish what they can and won't be assigned new jobs to complete.
-* My client is not set to English and this doesn't work, help?! My apologies, some of the scripting had to be based on the English names for things because the game's scripting leaves out important information. Since my primary language is Bad English other languages and their nuances are just a no go for me. Therefore, client languages other than English are not supported.
-* How will I know if an industry needs schematics or ore? When an industry needs schematics, the code will HARD STOP on that particular industry and !SCHEMATICS! will be displayed in red on the screen. Same goes for ore, if you run low, the refiner will hard stop on that ore and the screen will display !NEED ORE! in red. In each case, you can select the industry to see what exactly it requires.
+* I want to change what gets made, how do I do that?
+> Just CTRL-L on the primary board, edit the values, and click Apply. Then turn the board on! If it was already on, turn it off and then back on again.
+
+* I want to make things like honeycomb, scrap, fuel, or warp cells, how do I do that?
+> The Tiny Factory's default configuration only produces things that are made with Assemblers. If you'd like to customize the final products, remove one an assembler of your choice and replace it with the industry that can make your preferred final product.
+> Link Line 1 and Line 2 Hubs to this industry as inputs, and link the Output Hub as Output. Finally, link the industry to the "chef" programming board as this board handles the final product production. After doing this turn your factory off and back on again!
+
+* What is this "Unknown Schematic" I see in the LUA chat window?
+> This is normal. The game's scripting does not provide information on what industry units create which items, so the boards have to figure it out. When a board tries to apply an element to an industry that does not make that element, you will see the error.
+> When a successful match is found, it will be saved to the databank and used in the future. The error will happen more and more infrequently until it goes away completely! At least, until you add more items to be made...
+
+* Do I have to be present for this to work?
+> Yes! Like any LUA in game, a player must be present.
+> If you go too far, or turn off the primary boards, the industries will eventually finish what they can and won't be assigned new jobs to complete.
+
+* My client is not set to English and this doesn't work, help?!
+> My apologies, some of the scripting had to be based on the English names for things because the game's scripting leaves out important information.
+> Since my primary language is Bad English other languages and their nuances are just a no go for me. Therefore, client languages other than English are not supported.
+
+* How will I know if an industry needs schematics or ore?
+> When an industry needs schematics, the code will HARD STOP on that particular industry and !SCHEMATICS! will be displayed in red on the screen. Same goes for ore, if you run low, the refiner will hard stop on that ore and the screen will display !NEED ORE! in red. In each case, you can select the industry to see what exactly it requires.
 
 ## Discord
 
