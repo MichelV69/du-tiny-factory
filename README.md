@@ -98,6 +98,10 @@ No! Completely DRM FREE! Play with the code, break it, improve it, have fun!
 * 1x Uncommon Assembly Line S
 * 1x Uncommon Assembly Line XS
 
+### On a "MyDU" Server
+
++ If you are playing on a server that allows more than eight (8) connections per Programming Board, then the biggest single performance improvement you can make is to add one or two more *Uncommon Metalworks* and *Uncommon Electronics* Industry Units to each Line.  Expansive product sets will often find that most of the DUTF is stitting idle, waiting for the *Metalworks* and *Electronic* IND's to churn through their complex dependences.
+
 # Blueprints
 
 Ready-to-build BPs are available upon request. Contact PE902Gaming in DU to arrange to get one.
@@ -123,3 +127,4 @@ An "-RC" indicates a "release candidate" and _should_ be safe to use in producti
 * v1.1.0 - Minor bug fixes and other improvements
 * v1.0.1 - Fixed bug in screen's programming board.
 * v1.1.0 - Updated blueprints to include items for a schematics container. No software updates.
+
